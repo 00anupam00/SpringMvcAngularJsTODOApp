@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+<property name="now" value="now()" dbms="mysql"/>
+
+<changeSet id="00000000000001" author="anupam">
+    <createTable tableName="activity">
+        <column name="id" type="bigint" autoIncrement="true">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="description" type="varchar(255)">
+            <constraints nullable="false"/>
+        </column>
+        <column name="status" type="varchar(10)"/>
+    </createTable>
+
+    <modifySql>
+        <replace replace="bigint" with="long"/>
+    </modifySql>
+    <modifySql dbms="mysql">
+        <append value=" engine innodb"/>
+    </modifySql>
+</changeSet>
+
+<!--<changeSet id="00000000000002" author="anupam">
+    <loadData file="config/liquibase/todos.csv"
+              separator=";"
+              tableName="activity" />
+</changeSet>-->
+
+    <changeSet id="006" author="anupam">
+        <sqlFile dbms="mysql"
+                 encoding="utf8"
+                 path="insert_script.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+
+    <changeSet id="05" author="anupam">
+        <sql dbms="mysql">commit</sql>
+    </changeSet>
+
+</databaseChangeLog>
